@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 const fs = require("fs/promises");
-const path = require("path"); //еще один стандартный модуль. чтобы не писать относительные пути
+const path = require("path");
 const notesPath = path.join(__dirname, "db.json");
 
 async function addNote(title) {
@@ -28,6 +28,20 @@ async function removeNote(id) {
   console.log(chalk.bgRed("Note was deleted"));
 }
 
+async function editNote(id, newData) {
+  let notes = await getNotes();
+
+  notes = notes.map((note) => {
+    if (note.id === id) {
+      return { ...note, title: newData };
+    }
+    return note;
+  });
+
+  await fs.writeFile(notesPath, JSON.stringify(notes));
+  console.log(chalk.bgRed("Note was edited", newData));
+}
+
 async function printsNotes() {
   const notes = await getNotes();
 
@@ -37,6 +51,8 @@ async function printsNotes() {
 
 module.exports = {
   addNote,
+  getNotes,
   printsNotes,
   removeNote,
+  editNote,
 };

@@ -29,8 +29,36 @@
       <div class="card">
         <ul class="list-group">
           <% for(let i = 0; i < notes.length; i++){ %>
-          <li
+        
+              <form  name="edit" id="<%=notes[i].id%>" data-id="<%=notes[i].id%>" style="display: none;" >
+                <li
             class="list-group-item d-flex justify-content-between align-items-center"
+          >
+                <input type="text" value=" <%=notes[i].title%>" >
+                <div class="buttons">
+                  <button
+                  type="submit"
+                    class="btn btn-success"
+                    data-type="save"
+                    data-id="<%=notes[i].id%>"
+                    
+                  >
+                    Сохранить
+                  </button>
+                  <button
+                    class="btn btn-light"
+                    data-type="cancel"
+                    data-id="<%=notes[i].id%>"
+                    
+                  >
+                   Отмена
+                  </button>
+                </li>
+              </form>
+            
+          <div class="li-form" id="liForm<%=notes[i].id%>">
+            <li
+            class="list-group-item d-flex justify-content-between align-items-center" data-id="<%=notes[i].id%>"
           >
             <%=notes[i].title%>
             <div class="buttons">
@@ -39,7 +67,7 @@
                 data-type="edit"
                 data-id="<%=notes[i].id%>"
               >
-                Редактировать
+                Обновить
               </button>
               <button
                 class="btn btn-danger"
@@ -50,6 +78,8 @@
               </button>
             </div>
           </li>
+          </div>
+     
           <% } %>
         </ul>
       </div>

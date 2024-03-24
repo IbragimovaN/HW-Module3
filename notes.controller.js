@@ -39,7 +39,7 @@ async function editNote(id, newData) {
   });
 
   await fs.writeFile(notesPath, JSON.stringify(notes));
-  console.log(chalk.bgRed("Note was edited", newData));
+  console.log(chalk.bgGreen("Note was edited", id));
 }
 
 async function printsNotes() {

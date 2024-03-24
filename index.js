@@ -26,6 +26,7 @@ app.get("/", async (request, response) => {
     title: "Express App",
     notes: await getNotes(),
     created: false,
+    editing: false,
   });
 });
 
@@ -52,7 +53,7 @@ app.put("/:id", async (request, response) => {
   response.render("index", {
     title: "Express App",
     notes: await getNotes(),
-    created: false,
+    created: true,
   });
 });
 

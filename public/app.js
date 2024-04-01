@@ -3,6 +3,7 @@ document.addEventListener("click", (event) => {
     const id = event.target.dataset.id;
 
     remove(id).then(() => {
+      console.log(id);
       event.target.closest("li").remove();
     });
   }

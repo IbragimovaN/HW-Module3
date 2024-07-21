@@ -1,34 +1,37 @@
 const chalk = require("chalk");
-const fs = require("fs/promises");
-const path = require("path"); //еще один стандартный модуль. чтобы не писать относительные пути
-const notesPath = path.join(__dirname, "db.json");
+const Note = require("./models/Note");
 
-async function addNote(title) {
-  const notes = await getNotes();
-
-  const note = {
-    title,
-    id: Date.now().toString(),
-  };
-  notes.push(note);
-
-  await fs.writeFile(notesPath, JSON.stringify(notes));
+async function addNote(title, owner) {
+  await Note.create({ title, owner });
   console.log(chalk.bgGreen("Note was added!"));
 }
 
 async function getNotes() {
-  const notes = await fs.readFile(notesPath, { encoding: "utf-8" });
-  return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : [];
+  const notes = await Note.find();
+  return notes;
 }
 
-async function printsNotes() {
-  const notes = await getNotes();
+async function removeNote(id) {
+  const result = await Note.deleteOne({ _id: id });
+  console.log(result);
+  if (result.matchedCount === 0) {
+    throw new Error("No note to edit");
+  }
+  console.log(chalk.bgRed("Note was deleted"));
+}
 
-  console.log(chalk.bgCyan("Here is the list of notes:"));
-  notes.forEach((note) => console.log(chalk.blue(note.title)));
+async function editNote(id, newData) {
+  const result = await Note.updateOne({ _id: id }, { title: newData });
+  console.log(result);
+  if (result.matchedCount === 0) {
+    throw new Error("No note to edit");
+  }
+  console.log(chalk.bgGreen("Note was edited", id));
 }
 
 module.exports = {
   addNote,
-  printsNotes,
+  getNotes,
+  removeNote,
+  editNote,
 };
